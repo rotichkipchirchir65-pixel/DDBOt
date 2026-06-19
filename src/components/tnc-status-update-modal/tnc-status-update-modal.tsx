@@ -4,7 +4,7 @@ import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { useApiBase } from '@/hooks/useApiBase';
 import useIsTNCNeeded from '@/hooks/useIsTNCNeeded';
 import { useStore } from '@/hooks/useStore';
-import { Button, Link, Text } from '@deriv-com/quill-ui';
+import { Button, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import Modal from '../shared_ui/modal';
@@ -51,7 +51,13 @@ const TncStatusUpdateModal: React.FC = observer(() => {
                         <Localize
                             i18n_default_text='Please review our updated <0>terms and conditions</0>.'
                             components={[
-                                <Link className='tnc-link' key={0} size={isDesktop ? 'sm' : 'md'} href={tncLink} />,
+                                <a
+                                    className='tnc-link'
+                                    key={0}
+                                    href={tncLink}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                />,
                             ]}
                         />
                     </Text>

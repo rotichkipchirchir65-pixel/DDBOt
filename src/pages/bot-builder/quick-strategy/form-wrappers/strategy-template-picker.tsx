@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
-import { Chip } from '@deriv-com/quill-ui';
 import { SearchField } from '@deriv-com/quill-ui-next';
 import { localize } from '@deriv-com/translations';
 import { TFormData } from '../types';
@@ -85,13 +84,13 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
             </div>
             <div className='strategy-template-picker__chips'>
                 {TRADE_TYPES.map((item, index) => (
-                    <Chip.Selectable
+                    <button
                         key={index}
                         onClick={() => handleChipSelect(index)}
-                        selected={index == selector_chip_value}
-                        size='sm'
-                        label={item}
-                    />
+                        className={`strategy-template-picker__chip ${index === selector_chip_value ? 'strategy-template-picker__chip--selected' : ''}`}
+                    >
+                        {item}
+                    </button>
                 ))}
             </div>
             <StrategyList
