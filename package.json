@@ -6,6 +6,7 @@
         "node": "20.x"
     },
     "scripts": {
+        "dev": "NAPI_RS_NATIVE_LIBRARY_PATH=$(pwd)/node_modules/@rspack/binding-linux-x64-gnu/rspack.linux-x64-gnu.node rsbuild dev",
         "start": "NAPI_RS_NATIVE_LIBRARY_PATH=$(pwd)/node_modules/@rspack/binding-linux-x64-gnu/rspack.linux-x64-gnu.node rsbuild dev",
         "build": "rsbuild build",
         "watch": "rsbuild build --watch",
