@@ -12,7 +12,11 @@ import Endpoint from '@/pages/endpoint';
 import { TAuthData } from '@/types/api-types';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
 import CoreStoreProvider from './CoreStoreProvider';
+import { logEnvironmentValidation, checkEnvironmentBeforeInit } from '@/utils/env-validation';
 import './app-root.scss';
+
+// Log environment validation on startup
+logEnvironmentValidation();
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
