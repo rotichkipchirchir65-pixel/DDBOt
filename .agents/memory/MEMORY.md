@@ -1,0 +1,3 @@
+- [Rspack binary fix](rspack-binary-fix.md) — rspack binding Bus error on Replit; fix with NAPI_RS_NATIVE_LIBRARY_PATH env var and manual binary swap.
+- [Sass-embedded broken on Replit](sass-embedded-fix.md) — sass-embedded dart binary crashes (Bus error); use `implementation: require('sass')` in sassLoaderOptions instead.
+- [Partial npm install workaround](npm-install-partial.md) — npm install leaves broken empty package shells on Replit; fix by manually downloading tarballs from npm registry and copying into node_modules.
