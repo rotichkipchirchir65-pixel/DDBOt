@@ -82,6 +82,22 @@ const AppContent = observer(() => {
         }
     }, [common, connectionStatus, offline_timeout]);
 
+    // Maximum loading timeout — if API never connects within 15s, show dashboard anyway
+    useEffect(() => {
+        const maxLoadingTimeout = setTimeout(() => {
+            if (is_loading) {
+                console.log('[Timeout] Max loading timeout reached, showing dashboard');
+                if (!is_api_initialized) {
+                    init();
+                    setIsApiInitialized(true);
+                }
+                setIsLoading(false);
+            }
+        }, 15000);
+        return () => clearTimeout(maxLoadingTimeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // Handle offline scenarios - don't wait indefinitely for API
     useEffect(() => {
         if (!isOnline && is_loading) {
