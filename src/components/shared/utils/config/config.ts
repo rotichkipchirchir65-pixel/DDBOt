@@ -15,7 +15,7 @@ export const APP_IDS = {
 export const livechat_license_id = 12049137;
 export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7';
 
-export const domain_app_ids = {
+export const domain_app_ids: Record<string, string | number> = {
     'master.bot-standalone.pages.dev': APP_IDS.TMP_STAGING,
     'staging-dbot.deriv.com': APP_IDS.STAGING,
     'staging-dbot.deriv.be': APP_IDS.STAGING_BE,
@@ -23,6 +23,7 @@ export const domain_app_ids = {
     'dbot.deriv.com': APP_IDS.PRODUCTION,
     'dbot.deriv.be': APP_IDS.PRODUCTION_BE,
     'dbot.deriv.me': APP_IDS.PRODUCTION_ME,
+    'eliakim-trading-site-com-4y76.vercel.app': '33yjzVFBvxegoDiBsKb9K',
 };
 
 export const getCurrentProductionDomain = () =>
@@ -72,18 +73,23 @@ const getDefaultServerURL = () => {
 export const getDefaultAppIdAndUrl = () => {
     const server_url = getDefaultServerURL();
 
+    // Check domain-specific app_id first — takes priority over isTestLink fallback
+    const current_domain = getCurrentProductionDomain() ?? '';
+    if (current_domain && domain_app_ids[current_domain] !== undefined) {
+        return { app_id: domain_app_ids[current_domain], server_url };
+    }
+
     if (isTestLink()) {
         return { app_id: APP_IDS.LOCALHOST, server_url };
     }
 
-    const current_domain = getCurrentProductionDomain() ?? '';
-    const app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
+    const app_id = domain_app_ids[current_domain] ?? APP_IDS.PRODUCTION;
 
     return { app_id, server_url };
 };
 
 export const getAppId = () => {
-    let app_id = null;
+    let app_id: string | number | null = null;
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain = getCurrentProductionDomain() ?? '';
 
@@ -91,10 +97,13 @@ export const getAppId = () => {
         app_id = config_app_id;
     } else if (isStaging()) {
         app_id = APP_IDS.STAGING;
+    } else if (current_domain && domain_app_ids[current_domain] !== undefined) {
+        // Domain-specific app_id takes priority over isTestLink
+        app_id = domain_app_ids[current_domain];
     } else if (isTestLink()) {
         app_id = APP_IDS.LOCALHOST;
     } else {
-        app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
+        app_id = domain_app_ids[current_domain] ?? APP_IDS.PRODUCTION;
     }
 
     return app_id;
